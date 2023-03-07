@@ -28,8 +28,7 @@ export class BoardsController {
   }
 
   @Patch('/:id')
-  updateBoardStatus(@Param('id') id: string, @Body('status') status: BoardStatus,
-  ): Board {
+  updateBoardStatus(@Param('id') id: string, @Body('status') status: BoardStatus): Board {
     return this.boardsService.updateBoardStatus(id, status);
   }
 
