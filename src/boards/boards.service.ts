@@ -11,6 +11,10 @@ export class BoardsService {
     return this.boards;
   }
 
+  findBoardById(id: string): Board {
+    return this.boards.find((board) => board.id === id);
+  }
+
   createBoardV1(title: string, description: string): Board {
     const board: Board = {
       id: uuid(),
@@ -35,5 +39,15 @@ export class BoardsService {
 
     this.boards.push(board);
     return board;
+  }
+
+  updateBoardStatus(id: string, status: BoardStatus): Board {
+    const board = this.findBoardById(id);
+    board.status = status;
+    return board;
+  }
+
+  deleteBoardById(id: string): void {
+    this.boards = this.boards.filter((board) => board.id !== id);
   }
 }
