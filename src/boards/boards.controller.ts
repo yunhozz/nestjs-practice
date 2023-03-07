@@ -18,8 +18,7 @@ export class BoardsController {
   }
 
   @Post('/v1')
-  createBoardV1(@Body('title') title: string, @Body('description') description: string,
-  ): Board {
+  createBoardV1(@Body('title') title: string, @Body('description') description: string): Board {
     return this.boardsService.createBoardV1(title, description);
   }
 
