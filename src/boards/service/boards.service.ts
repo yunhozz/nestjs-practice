@@ -27,7 +27,7 @@ export class BoardsService {
   }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-    return await this.boardRepository.createBoard(createBoardDto);
+    return this.boardRepository.createBoard(createBoardDto);
   }
 
   async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
