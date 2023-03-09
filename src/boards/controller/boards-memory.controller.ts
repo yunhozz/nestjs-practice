@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BoardsMemoryService } from '../service/boards-memory.service';
-import { Board, BoardStatus } from '../board.model';
+import { Board, BoardMemoryStatus } from '../board.model';
 import { CreateBoardDto } from '../dto/create-board.dto';
 import { BoardStatusValidationPipe } from '../pipes/board-status-validation.pipe';
 
@@ -30,7 +30,7 @@ export class BoardsMemoryController {
   }
 
   @Patch('/:id')
-  updateBoardStatus(@Param('id') id: string, @Body('status', BoardStatusValidationPipe) status: BoardStatus): Board {
+  updateBoardStatus(@Param('id') id: string, @Body('status', BoardStatusValidationPipe) status: BoardMemoryStatus): Board {
     return this.boardMemoryService.updateBoardStatus(id, status);
   }
 

@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Board, BoardStatus } from '../board.model';
+import { Board, BoardMemoryStatus } from '../board.model';
 import { v1 as uuid } from 'uuid';
 import { CreateBoardDto } from '../dto/create-board.dto';
 
@@ -26,7 +26,7 @@ export class BoardsMemoryService {
       id: uuid(),
       title,
       description,
-      status: BoardStatus.PUBLIC,
+      status: BoardMemoryStatus.PUBLIC,
     };
 
     this.boards.push(board);
@@ -40,14 +40,14 @@ export class BoardsMemoryService {
       id: uuid(),
       title,
       description,
-      status: BoardStatus.PUBLIC,
+      status: BoardMemoryStatus.PUBLIC,
     };
 
     this.boards.push(board);
     return board;
   }
 
-  updateBoardStatus(id: string, status: BoardStatus): Board {
+  updateBoardStatus(id: string, status: BoardMemoryStatus): Board {
     const board = this.findBoardById(id);
     board.status = status;
     return board;
