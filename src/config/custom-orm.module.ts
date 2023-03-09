@@ -1,5 +1,5 @@
 import { DynamicModule, Provider } from '@nestjs/common';
-import { BOARD_CUSTOM_REPOSITORY } from './custom-repository.decorator';
+import { CUSTOM_REPOSITORY } from './custom-repository.decorator';
 import { getDataSourceToken, TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
@@ -8,7 +8,7 @@ export class CustomOrmModule {
     const providers: Provider[] = [];
 
     for (const repository of repositories) {
-      const entity = Reflect.getMetadata(BOARD_CUSTOM_REPOSITORY, repository);
+      const entity = Reflect.getMetadata(CUSTOM_REPOSITORY, repository);
 
       if (!entity) {
         continue;
