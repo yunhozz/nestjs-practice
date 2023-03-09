@@ -7,13 +7,7 @@ import { BoardsService } from './service/boards.service';
 import { BoardsController } from './controller/boards.controller';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      entities: [Board],
-    }),
-    BoardOrmModule.forCustomRepository([BoardRepository]),
-  ],
+  imports: [TypeOrmModule.forFeature([Board]), BoardOrmModule.forCustomRepository([BoardRepository])],
   controllers: [BoardsController],
   providers: [BoardsService],
 })
