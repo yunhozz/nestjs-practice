@@ -1,9 +1,9 @@
 import { DynamicModule, Provider } from '@nestjs/common';
-import { BOARD_CUSTOM_REPOSITORY } from './board-orm.decorator';
+import { BOARD_CUSTOM_REPOSITORY } from './custom-repository.decorator';
 import { getDataSourceToken, TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-export class BoardOrmModule {
+export class CustomOrmModule {
   public static forCustomRepository<T extends new (...args: any[]) => any>(repositories: T[]): DynamicModule {
     const providers: Provider[] = [];
 
