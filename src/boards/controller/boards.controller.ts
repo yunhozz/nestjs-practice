@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { BoardsService } from '../service/boards.service';
 import { Board } from '../board.entity';
 import { CreateBoardDto } from '../dto/create-board.dto';
@@ -6,6 +6,7 @@ import { BoardStatus } from '../board-status.enum';
 import { BoardStatusValidationPipe } from '../pipes/board-status-validation.pipe';
 
 @Controller('boards')
+@UseGuards(AuthGuard()) // auth module 설정 후 guard 적용
 export class BoardsController {
   constructor(private boardService: BoardsService) {}
 
