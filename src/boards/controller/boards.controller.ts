@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 import { BoardsService } from '../service/boards.service';
 import { Board } from '../board.entity';
 import { CreateBoardDto } from '../dto/create-board.dto';
@@ -12,6 +24,7 @@ import { User } from '../../auth/user.entity';
 @UseGuards(AuthGuard()) // auth module 설정 후 guard 적용
 export class BoardsController {
   constructor(private boardService: BoardsService) {}
+  private logger = new Logger('BoardsController');
 
   @Get('/:id')
   getBoardById(@Param('id', ParseIntPipe) id: number): Promise<Board> {
@@ -25,11 +38,13 @@ export class BoardsController {
 
   @Get('/mine')
   getMyBoards(@GetUser() user: User): Promise<Board[]> {
+    this.logger.verbose(`User ${user.username} is trying to get all boards`);
     return this.boardService.findMyBoards(user);
   }
 
   @Post()
-  createBoard(@Body() createBoardDto: CreateBoardDto, @GetUser() user: User): Promise<Board> {
+  createBoard(@Body(ValidationPipe) createBoardDto: CreateBoardDto, @GetUser() user: User): Promise<Board> {
+    this.logger.verbose(`User ${user.username} is creating new board. Payload: ${JSON.stringify(createBoardDto)}`);
     return this.boardService.createBoard(createBoardDto, user);
   }
 
@@ -46,3 +61,14 @@ export class BoardsController {
     return this.boardService.deleteBoardById(id, user);
   }
 }
+
+/*
+<로깅 (logging)>
+로그 레벨 지정: log, error, warn, debug, verbose
+
+Log - 중요한 정보의 범용 로깅
+Warning - 치명적이거나 파괴적이지 않은 처리되지 않은 문제
+Error - 치명적이거나 파괴적인 처리되지 않은 문제
+Debug - 오류 발생시 로직을 디버그하는데 도움이 되는 유용한 정보. 개발자용
+Verbose - 응용 프로그램의 동작에 대한 통찰력을 제공하는 정보입니다. 운영자용
+ */
