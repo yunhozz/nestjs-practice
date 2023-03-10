@@ -4,6 +4,7 @@ import { BoardRepository } from '../repo/board.repository';
 import { Board } from '../board.entity';
 import { CreateBoardDto } from '../dto/create-board.dto';
 import { BoardStatus } from '../board-status.enum';
+import { User } from '../../auth/user.entity';
 
 @Injectable()
 export class BoardsService {
@@ -26,8 +27,14 @@ export class BoardsService {
     return await this.boardRepository.find();
   }
 
-  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-    return this.boardRepository.createBoard(createBoardDto);
+  async findMyBoards(user: User): Promise<Board[]> {
+    const query = this.boardRepository.createQueryBuilder('board');
+    query.where('board.userId = :userId', { userId: user.id });
+    return query.getMany();
+  }
+
+  async createBoard(createBoardDto: CreateBoardDto, user: User): Promise<Board> {
+    return this.boardRepository.createBoard(createBoardDto, user);
   }
 
   async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
@@ -36,8 +43,8 @@ export class BoardsService {
     return await this.boardRepository.save(board);
   }
 
-  async deleteBoardById(id: number): Promise<void> {
-    const result = await this.boardRepository.delete(id);
+  async deleteBoardById(id: number, user: User): Promise<void> {
+    const result = await this.boardRepository.delete([id, user.id]);
 
     if (result.affected === 0) {
       throw new NotFoundException(`Can't find Board with id ${id}`);
